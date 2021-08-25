@@ -4,8 +4,8 @@ let nodemailer = require("nodemailer");
 let cors = require("cors");
 
 let transport = {
-  host: "smtp.mailtrap.io", // Don’t forget to replace with the SMTP host of your provider
-  port: 587,
+  host: process.env.EMAIL_HOST, // Don’t forget to replace with the SMTP host of your provider
+  port: process.env.EMAIL_PORT,
   //port: 2525,
   //port: 465,
   //secure: true, // use SSL
