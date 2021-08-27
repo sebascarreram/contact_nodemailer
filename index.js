@@ -1,17 +1,16 @@
+let dotenv = require("dotenv");
 let express = require("express");
 let router = express.Router();
 let nodemailer = require("nodemailer");
 let cors = require("cors");
 
+dotenv.config({ path: "./config.env" });
+
 let transport = {
-  host: process.env.EMAIL_HOST, // Don’t forget to replace with the SMTP host of your provider
-  port: process.env.EMAIL_PORT,
-  //port: 2525,
-  //port: 465,
-  //secure: true, // use SSL
+  service: "SendGrid",
   auth: {
-    user: process.env.USER,
-    pass: process.env.PASS,
+    user: process.env.SENDGRID_USERNAME,
+    pass: process.env.SENDGRID_PASSWORD,
   },
 };
 
@@ -34,7 +33,7 @@ router.post("/send", (req, res, next) => {
   const content = `Full name: ${name} ${lastname} \n email: ${email} \n message: ${message} `;
 
   let mail = {
-    from: name,
+    from: email,
     to: "sebascarreram@hotmail.com", // Change to email address that you want to receive messages on
     subject: "New Message from Contact Form",
     text: content,
@@ -51,6 +50,31 @@ router.post("/send", (req, res, next) => {
       });
     }
   });
+});
+
+router.post("/send", (req, res, next) => {
+  const name = req.body.name;
+  const lastname = req.body.lastname;
+  const email = req.body.email;
+  const message = req.body.message;
+  const content = `Full name: ${name} ${lastname} \n email: ${email} \n message: ${message} `;
+
+  const msg = {
+    to: "sebascarreram@hotmail.com", // Change to your recipient
+    from: email, // Change to your verified sender
+    subject: "Sending with SendGrid is Fun",
+    text: "and easy to do anywhere, even with Node.js",
+    html: content,
+  };
+  sgMail
+    .send(msg)
+    .then(() => {
+      console.log("Email sent");
+    })
+    .catch((error) => {
+      console.log("error");
+      console.error(error);
+    });
 });
 
 const app = express();
