@@ -2,7 +2,7 @@ let dotenv = require("dotenv");
 let express = require("express");
 let router = express.Router();
 let nodemailer = require("nodemailer");
-let cors = require("cors");
+const cors = require('cors')({ origin: true });
 
 dotenv.config({ path: "./config.env" });
 
