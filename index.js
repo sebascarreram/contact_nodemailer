@@ -52,31 +52,6 @@ router.post("/send", (req, res, next) => {
   });
 });
 
-router.post("/send", (req, res, next) => {
-  const name = req.body.name;
-  const lastname = req.body.lastname;
-  const email = req.body.email;
-  const message = req.body.message;
-  const content = `Full name: ${name} ${lastname} \n email: ${email} \n message: ${message} `;
-
-  const msg = {
-    to: "sebascarreram@hotmail.com", // Change to your recipient
-    from: email, // Change to your verified sender
-    subject: "Sending with SendGrid is Fun",
-    text: "and easy to do anywhere, even with Node.js",
-    html: content,
-  };
-  sgMail
-    .send(msg)
-    .then(() => {
-      console.log("Email sent");
-    })
-    .catch((error) => {
-      console.log("error");
-      console.error(error);
-    });
-});
-
 const app = express();
 app.use(cors());
 app.use(express.json());
